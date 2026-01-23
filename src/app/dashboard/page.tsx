@@ -3,6 +3,8 @@
 import { useState } from "react";
 import Link from "next/link";
 import Sidebar from "@/components/Sidebar";
+import DashboardAuthGuard from "@/components/DashboardAuthGuard";
+import TopBarAuth from "@/components/TopBarAuth";
 import { SidebarProvider, useSidebar } from "@/contexts/SidebarContext";
 import { NotificationProvider, useNotification } from "@/contexts/NotificationContext";
 import NotificationContainer from "@/components/Notification";
@@ -13,7 +15,9 @@ export default function Dashboard() {
   return (
     <NotificationProvider>
       <SidebarProvider>
-        <DashboardInner />
+        <DashboardAuthGuard>
+          <DashboardInner />
+        </DashboardAuthGuard>
       </SidebarProvider>
     </NotificationProvider>
   );
@@ -178,6 +182,7 @@ function DashboardInner() {
                 <div className="w-1.5 h-1.5 bg-emerald-500 rounded-full"></div>
                 Operational
               </div>
+              <TopBarAuth />
             </div>
           </div>
         </div>
