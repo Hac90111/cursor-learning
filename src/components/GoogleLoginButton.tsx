@@ -66,8 +66,10 @@ export default function GoogleLoginButton() {
   return (
     <button
       onClick={() => signIn("google")}
-      className="flex h-12 w-full items-center justify-center gap-3 rounded-full bg-white px-5 text-black shadow-md transition-all hover:shadow-lg dark:bg-zinc-800 dark:text-white md:w-[200px]"
+      className="flex h-12 w-full items-center justify-center gap-3 rounded-full bg-white px-5 text-black shadow-md transition-all hover:shadow-lg dark:bg-zinc-800 dark:text-white md:w-auto"
+      aria-label="Sign in with Google"
     >
+      <span className="text-sm font-medium">Sign in</span>
       <svg
         className="h-5 w-5"
         viewBox="0 0 24 24"
@@ -91,7 +93,6 @@ export default function GoogleLoginButton() {
           fill="#EA4335"
         />
       </svg>
-      Sign in with Google
     </button>
   );
 }

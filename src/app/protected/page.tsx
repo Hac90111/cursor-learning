@@ -16,7 +16,7 @@ export default function ProtectedPage() {
             <Sidebar />
             <main className="flex-1 overflow-y-auto bg-gray-50 flex items-center justify-center">
               <div className="text-center">
-                <div className="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mb-4"></div>
+                <div className="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-yellow-600 mb-4"></div>
                 <p className="text-gray-600 font-medium">Loading...</p>
               </div>
             </main>
@@ -110,7 +110,7 @@ function ProtectedInner() {
           <div className="p-6 lg:p-8 max-w-3xl mx-auto">
             {isValidating ? (
               <div className="bg-white border border-gray-200 rounded-xl shadow-sm p-12 text-center">
-                <div className="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mb-4"></div>
+                <div className="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-yellow-600 mb-4"></div>
                 <p className="text-gray-600 font-medium">Validating API key...</p>
               </div>
             ) : isValid && apiKeyData ? (
@@ -150,7 +150,7 @@ function ProtectedInner() {
                 <div className="mt-6 pt-6 border-t border-gray-200">
                   <button
                     onClick={() => router.push("/dashboard/playground")}
-                    className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors font-medium text-sm"
+                    className="px-4 py-2 bg-gradient-to-r from-yellow-400 via-yellow-500 to-yellow-600 hover:from-yellow-500 hover:via-yellow-600 hover:to-yellow-700 text-black font-semibold rounded-lg transition-all duration-200 text-sm shadow-lg hover:shadow-xl border-0"
                   >
                     Test Another Key
                   </button>
@@ -177,7 +177,7 @@ function ProtectedInner() {
                 <div className="mt-6 pt-6 border-t border-gray-200">
                   <button
                     onClick={() => router.push("/dashboard/playground")}
-                    className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors font-medium text-sm"
+                    className="px-4 py-2 bg-gradient-to-r from-yellow-400 via-yellow-500 to-yellow-600 hover:from-yellow-500 hover:via-yellow-600 hover:to-yellow-700 text-black font-semibold rounded-lg transition-all duration-200 text-sm shadow-lg hover:shadow-xl border-0"
                   >
                     Try Again
                   </button>

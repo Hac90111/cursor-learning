@@ -1,0 +1,69 @@
+'use client'
+
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import { BarChart3, Zap, TrendingUp, GitBranch, BookOpen, Award } from 'lucide-react'
+
+const features = [
+  {
+    icon: BookOpen,
+    title: 'Repository Summary',
+    description: 'Get comprehensive summaries of any repository including purpose, technology stack, and key contributors.',
+  },
+  {
+    icon: BarChart3,
+    title: 'Star Analytics',
+    description: 'Track star growth over time, compare with similar projects, and understand your popularity trends.',
+  },
+  {
+    icon: Award,
+    title: 'Cool Facts',
+    description: 'Discover interesting insights about your project - streak records, milestone celebrations, and achievements.',
+  },
+  {
+    icon: GitBranch,
+    title: 'Pull Request Intelligence',
+    description: 'View the latest important PRs, review status, and contributor activity at a glance.',
+  },
+  {
+    icon: TrendingUp,
+    title: 'Version Tracking',
+    description: 'Monitor release history, version updates, and track changes across all releases.',
+  },
+  {
+    icon: Zap,
+    title: 'Real-time Updates',
+    description: 'Get instant notifications on new releases, important PRs, and repository milestones.',
+  },
+]
+
+export function Features() {
+  return (
+    <section id="features" className="py-20 px-4 sm:px-6 lg:px-8 bg-card/30">
+      <div className="max-w-7xl mx-auto">
+        <div className="text-center mb-16">
+          <h2 className="text-4xl sm:text-5xl font-bold mb-4 text-balance">Powerful Features for Deep Analysis</h2>
+          <p className="text-muted-foreground text-lg max-w-2xl mx-auto text-balance">
+            Everything you need to understand and monitor your open source projects
+          </p>
+        </div>
+
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {features.map((feature, index) => {
+            const Icon = feature.icon
+            return (
+              <Card key={index} className="bg-background border-border hover:border-accent/50 transition">
+                <CardHeader>
+                  <Icon className="w-8 h-8 text-accent mb-3" />
+                  <CardTitle>{feature.title}</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-muted-foreground">{feature.description}</p>
+                </CardContent>
+              </Card>
+            )
+          })}
+        </div>
+      </div>
+    </section>
+  )
+}
