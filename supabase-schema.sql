@@ -58,11 +58,11 @@ CREATE TABLE IF NOT EXISTS api_keys (
   enable_pii BOOLEAN DEFAULT FALSE,
   created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
   updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
-  user_id UUID -- Add this if you want to associate keys with users
+  user_id TEXT REFERENCES users(id) ON DELETE CASCADE -- Associates keys with users
 );
 
--- Create index on user_id if you're using user authentication
--- CREATE INDEX IF NOT EXISTS idx_api_keys_user_id ON api_keys(user_id);
+-- Create index on user_id for faster lookups
+CREATE INDEX IF NOT EXISTS idx_api_keys_user_id ON api_keys(user_id);
 
 -- Create index on name for faster lookups
 CREATE INDEX IF NOT EXISTS idx_api_keys_name ON api_keys(name);
