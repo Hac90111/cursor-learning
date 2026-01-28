@@ -28,35 +28,35 @@ export function Hero() {
           cool facts in seconds.
         </p>
 
-        <div className="flex flex-col sm:flex-row gap-4 justify-center mb-16">
+        <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center mb-12 sm:mb-16 px-2">
           <Button 
             size="lg" 
-            className="bg-gradient-to-r from-yellow-400 via-yellow-500 to-yellow-600 hover:from-yellow-500 hover:via-yellow-600 hover:to-yellow-700 text-black font-semibold shadow-lg hover:shadow-xl transition-all duration-200 border-0"
+            className="w-full sm:w-auto min-h-[44px] px-6 py-3 sm:py-2.5 bg-gradient-to-r from-yellow-400 via-yellow-500 to-yellow-600 hover:from-yellow-500 hover:via-yellow-600 hover:to-yellow-700 text-black font-semibold shadow-lg hover:shadow-xl transition-all duration-200 border-0 touch-manipulation text-base sm:text-lg"
           >
             Get Started Free
           </Button>
           <Button 
             size="lg" 
             variant="outline" 
-            className="border-2 border-gray-300 dark:border-gray-600 bg-white/50 dark:bg-gray-900/50 hover:bg-gray-50 dark:hover:bg-gray-800/50 backdrop-blur-sm font-medium"
+            className="w-full sm:w-auto min-h-[44px] px-6 py-3 sm:py-2.5 border-2 border-gray-300 dark:border-gray-600 bg-white/50 dark:bg-gray-900/50 hover:bg-gray-50 dark:hover:bg-gray-800/50 backdrop-blur-sm font-medium touch-manipulation text-base sm:text-lg"
           >
             View Demo
           </Button>
         </div>
 
         {/* Trust badges */}
-        <div className="grid grid-cols-3 gap-8 text-center">
+        <div className="grid grid-cols-3 gap-4 sm:gap-6 lg:gap-8 text-center px-2">
           <div>
-            <div className="text-3xl font-bold bg-gradient-to-r from-yellow-500 to-yellow-600 bg-clip-text text-transparent mb-2">10K+</div>
-            <p className="text-sm text-muted-foreground">Repositories Analyzed</p>
+            <div className="text-2xl sm:text-3xl font-bold bg-gradient-to-r from-yellow-500 to-yellow-600 bg-clip-text text-transparent mb-1 sm:mb-2">10K+</div>
+            <p className="text-xs sm:text-sm text-muted-foreground">Repositories Analyzed</p>
           </div>
           <div>
-            <div className="text-3xl font-bold bg-gradient-to-r from-yellow-500 to-yellow-600 bg-clip-text text-transparent mb-2">500+</div>
-            <p className="text-sm text-muted-foreground">Active Users</p>
+            <div className="text-2xl sm:text-3xl font-bold bg-gradient-to-r from-yellow-500 to-yellow-600 bg-clip-text text-transparent mb-1 sm:mb-2">500+</div>
+            <p className="text-xs sm:text-sm text-muted-foreground">Active Users</p>
           </div>
           <div>
-            <div className="text-3xl font-bold bg-gradient-to-r from-yellow-500 to-yellow-600 bg-clip-text text-transparent mb-2">99.9%</div>
-            <p className="text-sm text-muted-foreground">Uptime</p>
+            <div className="text-2xl sm:text-3xl font-bold bg-gradient-to-r from-yellow-500 to-yellow-600 bg-clip-text text-transparent mb-1 sm:mb-2">99.9%</div>
+            <p className="text-xs sm:text-sm text-muted-foreground">Uptime</p>
           </div>
         </div>
       </div>

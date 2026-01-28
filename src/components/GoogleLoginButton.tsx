@@ -27,35 +27,35 @@ export default function GoogleLoginButton() {
       .slice(0, 2) || "U";
 
     return (
-      <div className="flex flex-col items-center gap-4 sm:flex-row">
-        <div className="flex items-center gap-3 rounded-full border border-solid border-black/[.08] px-5 py-3 dark:border-white/[.145]">
+      <div className="flex flex-col items-center gap-2 sm:gap-4 sm:flex-row">
+        <div className="flex items-center gap-2 sm:gap-3 rounded-full border border-solid border-black/[.08] px-3 sm:px-5 py-2 sm:py-3 dark:border-white/[.145]">
           {session.user?.image ? (
             <Image
               src={session.user.image}
               alt={session.user.name || "User"}
               width={40}
               height={40}
-              className="rounded-full border-2 border-gray-200 dark:border-gray-700"
+              className="rounded-full border-2 border-gray-200 dark:border-gray-700 w-8 h-8 sm:w-10 sm:h-10"
             />
           ) : (
-            <div className="w-10 h-10 rounded-full bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center border-2 border-gray-200 dark:border-gray-700">
-              <span className="text-white font-semibold text-sm">
+            <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center border-2 border-gray-200 dark:border-gray-700">
+              <span className="text-white font-semibold text-xs sm:text-sm">
                 {userInitials}
               </span>
             </div>
           )}
-          <div className="flex flex-col">
-            <span className="text-sm font-medium text-black dark:text-zinc-50">
+          <div className="flex flex-col hidden sm:flex">
+            <span className="text-xs sm:text-sm font-medium text-black dark:text-zinc-50 truncate max-w-[120px] sm:max-w-none">
               {session.user?.name}
             </span>
-            <span className="text-xs text-zinc-600 dark:text-zinc-400">
+            <span className="text-xs text-zinc-600 dark:text-zinc-400 truncate max-w-[120px] sm:max-w-none">
               {session.user?.email}
             </span>
           </div>
         </div>
         <button
           onClick={() => signOut()}
-          className="flex h-12 w-full items-center justify-center rounded-full bg-red-600 px-5 text-white transition-colors hover:bg-red-700 dark:bg-red-500 dark:hover:bg-red-600 md:w-[158px]"
+          className="flex h-9 sm:h-10 md:h-12 w-full sm:w-auto items-center justify-center rounded-full bg-red-600 px-4 sm:px-5 text-white transition-colors hover:bg-red-700 dark:bg-red-500 dark:hover:bg-red-600 text-xs sm:text-sm font-medium touch-manipulation min-h-[44px] sm:min-h-[40px] md:min-h-[48px]"
         >
           Sign Out
         </button>
@@ -66,12 +66,12 @@ export default function GoogleLoginButton() {
   return (
     <button
       onClick={() => signIn("google")}
-      className="flex h-12 w-full items-center justify-center gap-3 rounded-full bg-white px-5 text-black shadow-md transition-all hover:shadow-lg dark:bg-zinc-800 dark:text-white md:w-auto"
+      className="flex h-10 sm:h-12 w-full items-center justify-center gap-2 sm:gap-3 rounded-full bg-white px-3 sm:px-5 text-black shadow-md transition-all hover:shadow-lg dark:bg-zinc-800 dark:text-white md:w-auto touch-manipulation min-h-[44px] sm:min-h-[48px]"
       aria-label="Sign in with Google"
     >
-      <span className="text-sm font-medium">Sign in</span>
+      <span className="text-xs sm:text-sm font-medium">Sign in</span>
       <svg
-        className="h-5 w-5"
+        className="h-4 w-4 sm:h-5 sm:w-5"
         viewBox="0 0 24 24"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"

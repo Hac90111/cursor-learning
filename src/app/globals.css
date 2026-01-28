@@ -122,4 +122,26 @@
   body {
     @apply bg-background text-foreground;
   }
+  
+  /* Mobile-friendly touch targets */
+  button, a[role="button"], input[type="checkbox"], input[type="radio"] {
+    @apply touch-manipulation;
+  }
+  
+  /* Prevent text size adjustment on iOS */
+  html {
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+  }
+  
+  /* Smooth scrolling for better mobile experience */
+  html {
+    scroll-behavior: smooth;
+  }
+  
+  /* Prevent horizontal scroll on mobile */
+  body {
+    overflow-x: hidden;
+    width: 100%;
+  }
 }
