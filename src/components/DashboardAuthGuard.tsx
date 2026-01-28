@@ -19,7 +19,7 @@ export default function DashboardAuthGuard({ children }: DashboardAuthGuardProps
         <Sidebar />
         <main className="flex-1 overflow-y-auto bg-gray-50 flex items-center justify-center">
           <div className="text-center">
-            <div className="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mb-4"></div>
+            <div className="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-yellow-600 mb-4"></div>
             <p className="text-gray-600">Loading...</p>
           </div>
         </main>
@@ -48,9 +48,9 @@ export default function DashboardAuthGuard({ children }: DashboardAuthGuardProps
             <div className="flex items-center justify-center min-h-[60vh]">
               <div className="max-w-md w-full bg-white rounded-xl shadow-lg border border-gray-200 p-8">
                 <div className="text-center mb-6">
-                  <div className="inline-flex items-center justify-center w-16 h-16 bg-blue-100 rounded-full mb-4">
+                  <div className="inline-flex items-center justify-center w-16 h-16 bg-yellow-100 rounded-full mb-4">
                     <svg
-                      className="w-8 h-8 text-blue-600"
+                      className="w-8 h-8 text-yellow-600"
                       fill="none"
                       stroke="currentColor"
                       viewBox="0 0 24 24"

@@ -29,7 +29,7 @@ export default function TopBarAuth() {
   if (status === "loading") {
     return (
       <div className="flex items-center gap-2">
-        <div className="h-8 w-8 animate-spin rounded-full border-2 border-gray-300 border-t-blue-600"></div>
+        <div className="h-8 w-8 animate-spin rounded-full border-2 border-gray-300 border-t-yellow-600"></div>
       </div>
     );
   }
@@ -38,7 +38,7 @@ export default function TopBarAuth() {
     return (
       <button
         onClick={() => signIn("google")}
-        className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors text-sm font-medium shadow-sm"
+        className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-yellow-400 via-yellow-500 to-yellow-600 hover:from-yellow-500 hover:via-yellow-600 hover:to-yellow-700 text-black font-semibold rounded-lg transition-all duration-200 text-sm shadow-lg hover:shadow-xl border-0"
       >
         <svg
           className="h-4 w-4"

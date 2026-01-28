@@ -204,7 +204,7 @@ function DashboardInner() {
                   resetForm();
                   setShowModal(true);
                 }}
-                className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors text-sm font-medium flex items-center gap-2 shadow-sm"
+                className="px-4 py-2 bg-gradient-to-r from-yellow-400 via-yellow-500 to-yellow-600 hover:from-yellow-500 hover:via-yellow-600 hover:to-yellow-700 text-black font-semibold rounded-lg transition-all duration-200 text-sm flex items-center gap-2 shadow-lg hover:shadow-xl border-0"
               >
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                   <line x1="12" y1="5" x2="12" y2="19" />
@@ -250,7 +250,7 @@ function DashboardInner() {
             {/* Loading State */}
             {loading ? (
               <div className="bg-white border border-gray-200 rounded-xl p-12 text-center shadow-sm">
-                <div className="inline-block animate-spin rounded-full h-6 w-6 border-b-2 border-blue-600 mb-3"></div>
+                <div className="inline-block animate-spin rounded-full h-6 w-6 border-b-2 border-yellow-600 mb-3"></div>
                 <p className="text-gray-500 text-sm">Loading API keys...</p>
               </div>
             ) : apiKeys.length === 0 ? (
@@ -265,7 +265,7 @@ function DashboardInner() {
                     resetForm();
                     setShowModal(true);
                   }}
-                  className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors text-sm font-medium"
+                  className="px-4 py-2 bg-gradient-to-r from-yellow-400 via-yellow-500 to-yellow-600 hover:from-yellow-500 hover:via-yellow-600 hover:to-yellow-700 text-black font-semibold rounded-lg transition-all duration-200 text-sm shadow-lg hover:shadow-xl border-0"
                 >
                   Create API Key
                 </button>
@@ -378,7 +378,7 @@ function DashboardInner() {
                   value={formData.name}
                   onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                   placeholder="e.g., Production Key"
-                  className="w-full px-3 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm"
+                  className="w-full px-3 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-yellow-500 text-sm"
                 />
               </div>
 
@@ -390,7 +390,7 @@ function DashboardInner() {
                 <p className="text-xs text-gray-500 mb-3">{editingKey ? "Environment for this key" : "Choose the environment for this key"}</p>
                 <div className="space-y-2.5">
                   <label className={`flex items-start gap-3 p-4 border-2 rounded-lg cursor-pointer transition-all ${
-                    formData.keyType === "dev" ? "border-blue-500 bg-blue-50/50" : "border-gray-200 hover:border-gray-300 hover:bg-gray-50/50"
+                    formData.keyType === "dev" ? "border-yellow-500 bg-yellow-50/50" : "border-gray-200 hover:border-gray-300 hover:bg-gray-50/50"
                   }`}>
                     <input
                       type="radio"
@@ -398,7 +398,7 @@ function DashboardInner() {
                       value="dev"
                       checked={formData.keyType === "dev"}
                       onChange={(e) => setFormData({ ...formData, keyType: e.target.value as "dev" | "prod" })}
-                      className="mt-0.5 text-blue-600 focus:ring-blue-500"
+                      className="mt-0.5 text-yellow-600 focus:ring-yellow-500"
                     />
                     <div className="flex-1">
                       <div className="flex items-center gap-2 mb-1">
@@ -412,7 +412,7 @@ function DashboardInner() {
                     </div>
                   </label>
                   <label className={`flex items-start gap-3 p-4 border-2 rounded-lg cursor-pointer transition-all ${
-                    formData.keyType === "prod" ? "border-blue-500 bg-blue-50/50" : "border-gray-200 hover:border-gray-300 hover:bg-gray-50/50"
+                    formData.keyType === "prod" ? "border-yellow-500 bg-yellow-50/50" : "border-gray-200 hover:border-gray-300 hover:bg-gray-50/50"
                   }`}>
                     <input
                       type="radio"
@@ -420,7 +420,7 @@ function DashboardInner() {
                       value="prod"
                       checked={formData.keyType === "prod"}
                       onChange={(e) => setFormData({ ...formData, keyType: e.target.value as "dev" | "prod" })}
-                      className="mt-0.5 text-blue-600 focus:ring-blue-500"
+                      className="mt-0.5 text-yellow-600 focus:ring-yellow-500"
                     />
                     <div className="flex-1">
                       <div className="flex items-center gap-2 mb-1">
@@ -445,7 +445,7 @@ function DashboardInner() {
                     type="checkbox"
                     checked={formData.limitMonthlyUsage}
                     onChange={(e) => setFormData({ ...formData, limitMonthlyUsage: e.target.checked })}
-                    className="mt-0.5 w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
+                    className="mt-0.5 w-4 h-4 text-yellow-600 border-gray-300 rounded focus:ring-yellow-500"
                   />
                   <div className="flex-1">
                     <span className="text-sm font-medium text-gray-900 block mb-1">Limit monthly usage</span>
@@ -460,7 +460,7 @@ function DashboardInner() {
                       type="number"
                       value={formData.monthlyLimit}
                       onChange={(e) => setFormData({ ...formData, monthlyLimit: parseInt(e.target.value) || 1000 })}
-                      className="w-full px-3 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm"
+                      className="w-full px-3 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-yellow-500 text-sm"
                       placeholder="1000"
                     />
                   </div>
@@ -474,7 +474,7 @@ function DashboardInner() {
                     type="checkbox"
                     checked={formData.enablePII}
                     onChange={(e) => setFormData({ ...formData, enablePII: e.target.checked })}
-                    className="mt-0.5 w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
+                    className="mt-0.5 w-4 h-4 text-yellow-600 border-gray-300 rounded focus:ring-yellow-500"
                   />
                   <div className="flex-1">
                     <span className="text-sm font-medium text-gray-900 block mb-1">Enable PII Restrictions</span>
@@ -489,13 +489,13 @@ function DashboardInner() {
               <div className="flex gap-3 pt-6 border-t border-gray-200">
                 <button
                   onClick={editingKey ? handleUpdate : handleCreate}
-                  className="flex-1 px-4 py-2.5 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors font-medium text-sm shadow-sm"
+                  className="flex-1 px-4 py-2.5 bg-gradient-to-r from-yellow-400 via-yellow-500 to-yellow-600 hover:from-yellow-500 hover:via-yellow-600 hover:to-yellow-700 text-black font-semibold rounded-lg transition-all duration-200 text-sm shadow-lg hover:shadow-xl border-0"
                 >
                   {editingKey ? "Save Changes" : "Create Key"}
                 </button>
                 <button
                   onClick={resetForm}
-                  className="flex-1 px-4 py-2.5 bg-white text-gray-700 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors font-medium text-sm"
+                  className="flex-1 px-4 py-2.5 bg-white text-gray-700 border-2 border-gray-300 rounded-lg hover:bg-gray-50 transition-colors font-medium text-sm"
                 >
                   Cancel
                 </button>
