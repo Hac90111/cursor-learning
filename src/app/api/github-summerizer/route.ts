@@ -3,20 +3,21 @@ import { createServerSupabaseClient } from '@/lib/supabase-server';
 import { summarizeReadme, type ReadmeSummary } from './chain';
 
 /**
- * Validates an API key
- * API key must be provided in the Authorization header
+ * Validates an API key (optional - allows public access)
+ * If API key is provided, validates it. If not provided, allows public access.
  */
 async function validateApiKey(
   apiKey: string | null
 ): Promise<{ valid: boolean; data?: any; error?: string }> {
   try {
+    // If no API key provided, allow public access
     if (!apiKey || !apiKey.trim()) {
       return {
-        valid: false,
-        error: 'API key is required. Provide it in Authorization header as: Authorization: Bearer <your-api-key>',
+        valid: true,
       };
     }
 
+    // If API key is provided, validate it
     const supabase = createServerSupabaseClient();
     const { data, error } = await supabase
       .from('api_keys')
@@ -71,6 +72,12 @@ async function validateApiKey(
     };
   } catch (error: any) {
     console.error('API key validation error:', error);
+    // If validation fails but no API key was required, allow public access
+    if (!apiKey || !apiKey.trim()) {
+      return {
+        valid: true,
+      };
+    }
     return {
       valid: false,
       error: error.message || 'Failed to validate API key',
@@ -98,13 +105,14 @@ function extractApiKeyFromHeader(request: NextRequest): string | null {
   return authHeader.trim();
 }
 
-// POST /api/github-summerizer - GitHub summarizer endpoint with API key validation
+// POST /api/github-summerizer - GitHub summarizer endpoint (public access, optional API key)
 export async function POST(request: NextRequest) {
   try {
-    // Extract and validate API key from header only
+    // Extract and validate API key from header (optional)
     const apiKey = extractApiKeyFromHeader(request);
     const validation = await validateApiKey(apiKey);
     
+    // Only reject if API key was provided but is invalid
     if (!validation.valid) {
       return NextResponse.json(
         { error: validation.error || 'API key validation failed' },
@@ -192,13 +200,14 @@ export async function POST(request: NextRequest) {
   }
 }
 
-// GET /api/github-summerizer - GitHub summarizer endpoint with API key validation
+// GET /api/github-summerizer - GitHub summarizer endpoint (public access, optional API key)
 export async function GET(request: NextRequest) {
   try {
-    // Extract and validate API key from header only
+    // Extract and validate API key from header (optional)
     const apiKey = extractApiKeyFromHeader(request);
     const validation = await validateApiKey(apiKey);
     
+    // Only reject if API key was provided but is invalid
     if (!validation.valid) {
       return NextResponse.json(
         { error: validation.error || 'API key validation failed' },

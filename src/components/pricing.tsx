@@ -27,6 +27,7 @@ const plans = [
     period: '/month',
     cta: 'Start Free Trial',
     featured: true,
+    comingSoon: true,
     features: [
       'Unlimited repository analysis',
       'AI-powered summaries',
@@ -45,6 +46,7 @@ const plans = [
     price: 'Custom',
     period: 'pricing',
     cta: 'Contact Sales',
+    comingSoon: true,
     features: [
       'Everything in Pro',
       'Dedicated account manager',
@@ -74,12 +76,21 @@ export function Pricing() {
             <Card
               key={index}
               className={`relative bg-background border-border transition-all duration-300 ${
-                plan.featured ? 'lg:scale-105 lg:shadow-xl border-yellow-400/50 dark:border-yellow-600/50 hover:border-yellow-500 dark:hover:border-yellow-500' : 'hover:border-yellow-200 dark:hover:border-yellow-800'
+                plan.comingSoon 
+                  ? 'opacity-75 border-gray-300 dark:border-gray-700' 
+                  : plan.featured 
+                    ? 'lg:scale-105 lg:shadow-xl border-yellow-400/50 dark:border-yellow-600/50 hover:border-yellow-500 dark:hover:border-yellow-500' 
+                    : 'hover:border-yellow-200 dark:hover:border-yellow-800'
               }`}
             >
-              {plan.featured && (
+              {plan.featured && !plan.comingSoon && (
                 <div className="absolute -top-3 sm:-top-4 left-1/2 transform -translate-x-1/2 bg-gradient-to-r from-yellow-400 via-yellow-500 to-yellow-600 px-3 sm:px-4 py-1 rounded-full text-xs font-semibold text-black shadow-lg whitespace-nowrap">
                   Most Popular
+                </div>
+              )}
+              {plan.comingSoon && (
+                <div className="absolute -top-3 sm:-top-4 left-1/2 transform -translate-x-1/2 bg-gray-500 dark:bg-gray-600 px-3 sm:px-4 py-1 rounded-full text-xs font-semibold text-white shadow-lg whitespace-nowrap">
+                  Coming Soon
                 </div>
               )}
               <CardHeader className="pb-4 sm:pb-6">
@@ -95,14 +106,17 @@ export function Pricing() {
                 </div>
 
                 <Button 
+                  disabled={plan.comingSoon}
                   className={`w-full min-h-[44px] sm:min-h-[40px] px-4 py-3 sm:py-2 text-sm sm:text-base font-semibold touch-manipulation ${
-                    plan.featured 
-                      ? 'bg-gradient-to-r from-yellow-400 via-yellow-500 to-yellow-600 hover:from-yellow-500 hover:via-yellow-600 hover:to-yellow-700 text-black shadow-lg hover:shadow-xl border-0' 
-                      : ''
+                    plan.comingSoon
+                      ? 'bg-gray-200 dark:bg-gray-700 text-gray-500 dark:text-gray-400 cursor-not-allowed opacity-60'
+                      : plan.featured 
+                        ? 'bg-gradient-to-r from-yellow-400 via-yellow-500 to-yellow-600 hover:from-yellow-500 hover:via-yellow-600 hover:to-yellow-700 text-black shadow-lg hover:shadow-xl border-0' 
+                        : ''
                   }`} 
-                  variant={plan.featured ? 'default' : 'outline'}
+                  variant={plan.comingSoon ? 'outline' : plan.featured ? 'default' : 'outline'}
                 >
-                  {plan.cta}
+                  {plan.comingSoon ? 'Coming Soon' : plan.cta}
                 </Button>
 
                 <div className="space-y-2.5 sm:space-y-3 pt-4 border-t border-border">
