@@ -3,7 +3,7 @@
 import { useState } from 'react'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardAction } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
-import { Send, BookOpen, Copy, Check, Loader2 } from 'lucide-react'
+import { Send, BookOpen, Copy, Check, Loader2, FileText, Sparkles } from 'lucide-react'
 
 const DEFAULT_PAYLOAD = {
   githubUrl: "https://github.com/github/copilot-sdk?utm_source=email-cli-sdk-repo-cta&utm_medium=email&utm_campaign=cli-sdk-jan-2026"
@@ -108,7 +108,7 @@ export function ApiDemo() {
             Try the API
           </h2>
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto text-balance">
-            Test the GitHub Summarizer API with a live demo. Edit the payload and see the response in real-time.
+            Test the GitHub Summarizer API with a live demo. Edit the payload and send requests.
           </p>
         </div>
 
@@ -250,49 +250,56 @@ export function ApiDemo() {
               </div>
             )}
 
-            {/* Response Section */}
-            {response && (
-              <div className="space-y-2">
-                <div className="flex items-center justify-between">
-                  <label className="text-sm font-medium">Response</label>
-                  <div className="flex items-center gap-2 text-xs text-muted-foreground">
-                    <span className="px-2 py-1 bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400 rounded">
-                      200 OK
-                    </span>
-                  </div>
-                </div>
-                <div className="p-4 bg-muted/30 rounded-md border border-border">
-                  <pre className="text-sm font-mono overflow-x-auto whitespace-pre-wrap">
-                    {JSON.stringify(response, null, 2)}
-                  </pre>
-                </div>
+            {/* Response Display - Modern Design */}
+            {response && response.data && (
+              <div className="space-y-6">
+                {/* Summary Card */}
+                <Card className="border-border hover:border-yellow-300 dark:hover:border-yellow-700 transition-all duration-300 hover:shadow-lg hover:shadow-yellow-100/50 dark:hover:shadow-yellow-900/20 group">
+                  <CardHeader>
+                    <div className="flex items-center gap-3 mb-2">
+                      <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-yellow-400/20 via-yellow-300/20 to-yellow-500/20 dark:from-yellow-900/30 dark:via-yellow-800/30 dark:to-yellow-700/30 flex items-center justify-center group-hover:from-yellow-400/30 group-hover:via-yellow-300/30 group-hover:to-yellow-500/30 transition-all duration-300">
+                        <FileText className="w-5 h-5 text-yellow-600 dark:text-yellow-500" />
+                      </div>
+                      <CardTitle className="group-hover:text-yellow-600 dark:group-hover:text-yellow-500 transition-colors">
+                        Summary
+                      </CardTitle>
+                    </div>
+                  </CardHeader>
+                  <CardContent>
+                    <p className="text-base text-foreground leading-relaxed">
+                      {response.data.summary}
+                    </p>
+                  </CardContent>
+                </Card>
 
-                {/* Formatted Response Display */}
-                {response.success && response.data && (
-                  <div className="mt-4 p-4 bg-gradient-to-br from-yellow-50/50 to-yellow-100/30 dark:from-yellow-900/10 dark:to-yellow-800/10 rounded-lg border border-yellow-200 dark:border-yellow-800 space-y-4">
-                    <div>
-                      <h4 className="font-semibold text-lg mb-2">Repository</h4>
-                      <div className="space-y-1 text-sm">
-                        <div><span className="font-medium">Name:</span> {response.data.repository.name}</div>
-                        <div><span className="font-medium">Owner:</span> {response.data.repository.owner}</div>
-                        <div><span className="font-medium">URL:</span> <a href={response.data.repository.url} target="_blank" rel="noopener noreferrer" className="text-yellow-600 dark:text-yellow-400 hover:underline">{response.data.repository.url}</a></div>
+                {/* Cool Facts Card */}
+                {response.data.cool_facts && response.data.cool_facts.length > 0 && (
+                  <Card className="border-border hover:border-yellow-300 dark:hover:border-yellow-700 transition-all duration-300 hover:shadow-lg hover:shadow-yellow-100/50 dark:hover:shadow-yellow-900/20 group">
+                    <CardHeader>
+                      <div className="flex items-center gap-3 mb-2">
+                        <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-yellow-400/20 via-yellow-300/20 to-yellow-500/20 dark:from-yellow-900/30 dark:via-yellow-800/30 dark:to-yellow-700/30 flex items-center justify-center group-hover:from-yellow-400/30 group-hover:via-yellow-300/30 group-hover:to-yellow-500/30 transition-all duration-300">
+                          <Sparkles className="w-5 h-5 text-yellow-600 dark:text-yellow-500" />
+                        </div>
+                        <CardTitle className="group-hover:text-yellow-600 dark:group-hover:text-yellow-500 transition-colors">
+                          Cool Facts
+                        </CardTitle>
                       </div>
-                    </div>
-                    <div>
-                      <h4 className="font-semibold text-lg mb-2">Summary</h4>
-                      <p className="text-sm text-muted-foreground">{response.data.summary}</p>
-                    </div>
-                    {response.data.cool_facts && response.data.cool_facts.length > 0 && (
-                      <div>
-                        <h4 className="font-semibold text-lg mb-2">Cool Facts</h4>
-                        <ul className="list-disc list-inside space-y-1 text-sm text-muted-foreground">
-                          {response.data.cool_facts.map((fact, index) => (
-                            <li key={index}>{fact}</li>
-                          ))}
-                        </ul>
-                      </div>
-                    )}
-                  </div>
+                    </CardHeader>
+                    <CardContent>
+                      <ul className="space-y-4">
+                        {response.data.cool_facts.map((fact, index) => (
+                          <li key={index} className="flex items-start gap-3 group/item">
+                            <div className="flex-shrink-0 w-6 h-6 rounded-full bg-gradient-to-br from-yellow-400/30 via-yellow-300/30 to-yellow-500/30 dark:from-yellow-900/40 dark:via-yellow-800/40 dark:to-yellow-700/40 flex items-center justify-center mt-0.5 group-hover/item:from-yellow-400/50 group-hover/item:via-yellow-300/50 group-hover/item:to-yellow-500/50 transition-all duration-300">
+                              <span className="text-yellow-600 dark:text-yellow-500 text-xs font-bold">✓</span>
+                            </div>
+                            <p className="text-base text-foreground leading-relaxed flex-1">
+                              {fact}
+                            </p>
+                          </li>
+                        ))}
+                      </ul>
+                    </CardContent>
+                  </Card>
                 )}
               </div>
             )}
