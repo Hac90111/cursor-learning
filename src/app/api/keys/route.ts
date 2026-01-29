@@ -75,7 +75,8 @@ export async function POST(request: NextRequest) {
     }
 
     const body = await request.json();
-    const { name, type, key, monthly_limit, limit_monthly_usage, enable_pii } = body;
+    const { name, type, key, enable_pii } = body;
+    // Note: monthly_limit and limit_monthly_usage are now set from database defaults
 
     // Validation
     if (!name || !name.trim()) {
@@ -104,8 +105,7 @@ export async function POST(request: NextRequest) {
       type: type || 'dev',
       usage: 0,
       key: apiKey,
-      monthly_limit: limit_monthly_usage ? monthly_limit : null,
-      limit_monthly_usage: limit_monthly_usage || false,
+      // monthly_limit and limit_monthly_usage will use database defaults
       enable_pii: enable_pii || false,
       user_id: userId,
     };

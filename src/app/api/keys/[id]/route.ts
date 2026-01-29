@@ -82,7 +82,8 @@ export async function PUT(
 
     const { id } = await params;
     const body = await request.json();
-    const { name, type, key, monthly_limit, limit_monthly_usage, enable_pii } = body;
+    const { name, type, key, enable_pii } = body;
+    // Note: monthly_limit and limit_monthly_usage are not user-configurable
 
     // Validation
     if (!name || !name.trim()) {
@@ -139,10 +140,7 @@ export async function PUT(
 
     if (type) updateData.type = type;
     if (key) updateData.key = key;
-    if (limit_monthly_usage !== undefined) {
-      updateData.limit_monthly_usage = limit_monthly_usage;
-      updateData.monthly_limit = limit_monthly_usage ? monthly_limit : null;
-    }
+    // monthly_limit and limit_monthly_usage are not user-configurable - they use database defaults
     if (enable_pii !== undefined) updateData.enable_pii = enable_pii;
 
     const { data, error: updateError } = await supabase

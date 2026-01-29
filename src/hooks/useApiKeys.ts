@@ -108,8 +108,7 @@ export function useApiKeys(options: UseApiKeysOptions = {}) {
           name: formData.name,
           type: formData.keyType,
           key: formData.key || undefined,
-          monthly_limit: formData.limitMonthlyUsage ? formData.monthlyLimit : undefined,
-          limit_monthly_usage: formData.limitMonthlyUsage,
+          // monthly_limit and limit_monthly_usage are now set from database defaults
           enable_pii: formData.enablePII,
         };
 
@@ -143,16 +142,12 @@ export function useApiKeys(options: UseApiKeysOptions = {}) {
         const requestBody: any = {
           name: formData.name,
           type: formData.keyType,
-          limit_monthly_usage: formData.limitMonthlyUsage,
+          // monthly_limit and limit_monthly_usage are not user-configurable
           enable_pii: formData.enablePII,
         };
 
         if (formData.key && formData.key !== existingKey) {
           requestBody.key = formData.key;
-        }
-
-        if (formData.limitMonthlyUsage) {
-          requestBody.monthly_limit = formData.monthlyLimit;
         }
 
         const response = await authenticatedFetch(`/api/keys/${id}`, {

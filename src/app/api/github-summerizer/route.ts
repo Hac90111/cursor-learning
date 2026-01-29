@@ -1,89 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { createServerSupabaseClient } from '@/lib/supabase-server';
+import { validateApiKey, checkRateLimit } from '@/lib/rate-limit';
 import { summarizeReadme, type ReadmeSummary } from './chain';
 
-/**
- * Validates an API key (optional - allows public access)
- * If API key is provided, validates it. If not provided, allows public access.
- */
-async function validateApiKey(
-  apiKey: string | null
-): Promise<{ valid: boolean; data?: any; error?: string }> {
-  try {
-    // If no API key provided, allow public access
-    if (!apiKey || !apiKey.trim()) {
-      return {
-        valid: true,
-      };
-    }
-
-    // If API key is provided, validate it
-    const supabase = createServerSupabaseClient();
-    const { data, error } = await supabase
-      .from('api_keys')
-      .select('id, name, type, key, monthly_limit, limit_monthly_usage, usage')
-      .eq('key', apiKey.trim())
-      .single();
-
-    if (error) {
-      console.error('Supabase error:', error);
-      
-      // Provide more specific error messages
-      let errorMessage = error.message || 'API key is invalid';
-      
-      if (error.code === '42P01' || error.message.includes('does not exist')) {
-        errorMessage = 'Database table "api_keys" does not exist. Please run the SQL schema from supabase-schema.sql in your Supabase SQL Editor.';
-      } else if (error.code === '42501' || error.message.includes('permission denied')) {
-        errorMessage = 'Row Level Security (RLS) policy is blocking access. Please check your RLS policies in Supabase.';
-      }
-      
-      return {
-        valid: false,
-        error: errorMessage,
-      };
-    }
-
-    if (!data) {
-      return {
-        valid: false,
-        error: 'API key is invalid',
-      };
-    }
-
-    // Check monthly limit if enabled
-    if (data.limit_monthly_usage && data.monthly_limit !== null) {
-      if (data.usage >= data.monthly_limit) {
-        return {
-          valid: false,
-          error: 'API key has reached its monthly usage limit',
-        };
-      }
-    }
-
-    return {
-      valid: true,
-      data: {
-        id: data.id,
-        name: data.name,
-        type: data.type,
-        usage: data.usage,
-        monthly_limit: data.monthly_limit,
-      },
-    };
-  } catch (error: any) {
-    console.error('API key validation error:', error);
-    // If validation fails but no API key was required, allow public access
-    if (!apiKey || !apiKey.trim()) {
-      return {
-        valid: true,
-      };
-    }
-    return {
-      valid: false,
-      error: error.message || 'Failed to validate API key',
-    };
-  }
-}
 
 /**
  * Extracts API key from Authorization header only
@@ -108,16 +26,42 @@ function extractApiKeyFromHeader(request: NextRequest): string | null {
 // POST /api/github-summerizer - GitHub summarizer endpoint (public access, optional API key)
 export async function POST(request: NextRequest) {
   try {
-    // Extract and validate API key from header (optional)
+    // Extract API key from header (optional)
     const apiKey = extractApiKeyFromHeader(request);
-    const validation = await validateApiKey(apiKey);
     
-    // Only reject if API key was provided but is invalid
-    if (!validation.valid) {
+    // Step 1: Validate API key
+    const validationResult = await validateApiKey(apiKey);
+    
+    // Reject if API key was provided but is invalid
+    if (!validationResult.valid) {
       return NextResponse.json(
-        { error: validation.error || 'API key validation failed' },
+        { 
+          error: validationResult.error || 'API key validation failed',
+          code: 'INVALID_API_KEY'
+        },
         { status: 401 }
       );
+    }
+
+    // Step 2: Check rate limit (only if API key was provided)
+    if (validationResult.apiKeyId) {
+      const rateLimitResult = await checkRateLimit({
+        apiKeyId: validationResult.apiKeyId,
+        incrementUsage: true, // Increment usage before processing
+      });
+      
+      // Reject if rate limit exceeded
+      if (!rateLimitResult.allowed) {
+        return NextResponse.json(
+          { 
+            error: rateLimitResult.error || 'Rate limit exceeded',
+            code: 'RATE_LIMIT_EXCEEDED',
+            currentUsage: rateLimitResult.currentUsage,
+            limit: rateLimitResult.limit
+          },
+          { status: 429 }
+        );
+      }
     }
 
     // Parse request body for actual request data (not API key)
@@ -173,10 +117,8 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Increment API key usage
-    if (validation.data?.id) {
-      await incrementApiKeyUsage(validation.data.id);
-    }
+    // Note: Usage was already incremented before processing the request
+    // This ensures accurate usage tracking and rate limit enforcement
 
     return NextResponse.json({
       success: true,
@@ -203,16 +145,42 @@ export async function POST(request: NextRequest) {
 // GET /api/github-summerizer - GitHub summarizer endpoint (public access, optional API key)
 export async function GET(request: NextRequest) {
   try {
-    // Extract and validate API key from header (optional)
+    // Extract API key from header (optional)
     const apiKey = extractApiKeyFromHeader(request);
-    const validation = await validateApiKey(apiKey);
     
-    // Only reject if API key was provided but is invalid
-    if (!validation.valid) {
+    // Step 1: Validate API key
+    const validationResult = await validateApiKey(apiKey);
+    
+    // Reject if API key was provided but is invalid
+    if (!validationResult.valid) {
       return NextResponse.json(
-        { error: validation.error || 'API key validation failed' },
+        { 
+          error: validationResult.error || 'API key validation failed',
+          code: 'INVALID_API_KEY'
+        },
         { status: 401 }
       );
+    }
+
+    // Step 2: Check rate limit (only if API key was provided)
+    if (validationResult.apiKeyId) {
+      const rateLimitResult = await checkRateLimit({
+        apiKeyId: validationResult.apiKeyId,
+        incrementUsage: true, // Increment usage before processing
+      });
+      
+      // Reject if rate limit exceeded
+      if (!rateLimitResult.allowed) {
+        return NextResponse.json(
+          { 
+            error: rateLimitResult.error || 'Rate limit exceeded',
+            code: 'RATE_LIMIT_EXCEEDED',
+            currentUsage: rateLimitResult.currentUsage,
+            limit: rateLimitResult.limit
+          },
+          { status: 429 }
+        );
+      }
     }
 
     // Get query parameters
@@ -262,10 +230,8 @@ export async function GET(request: NextRequest) {
       );
     }
 
-    // Increment API key usage
-    if (validation.data?.id) {
-      await incrementApiKeyUsage(validation.data.id);
-    }
+    // Note: Usage was already incremented before processing the request
+    // This ensures accurate usage tracking and rate limit enforcement
 
     return NextResponse.json({
       success: true,
@@ -289,39 +255,6 @@ export async function GET(request: NextRequest) {
   }
 }
 
-/**
- * Increments API key usage count in the database
- */
-async function incrementApiKeyUsage(apiKeyId: string): Promise<void> {
-  try {
-    const supabase = createServerSupabaseClient();
-    
-    // Get current usage count
-    const { data: currentKey, error: fetchError } = await supabase
-      .from('api_keys')
-      .select('usage')
-      .eq('id', apiKeyId)
-      .single();
-    
-    if (fetchError || !currentKey) {
-      console.error('Failed to fetch current API key usage:', fetchError);
-      return;
-    }
-    
-    // Increment usage count
-    const { error: updateError } = await supabase
-      .from('api_keys')
-      .update({ usage: (currentKey.usage || 0) + 1 })
-      .eq('id', apiKeyId);
-    
-    if (updateError) {
-      console.error('Failed to update API key usage:', updateError);
-    }
-  } catch (error) {
-    // Log but don't fail the request if usage tracking fails
-    console.error('Failed to increment API key usage:', error);
-  }
-}
 
 /**
  * Fetches the content of a README.md file from a GitHub repository URL

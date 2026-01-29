@@ -88,8 +88,8 @@ function DashboardInner() {
       name: key.name,
       key: key.key,
       keyType: key.type === "dev" ? "dev" : "prod",
-      limitMonthlyUsage: key.limit_monthly_usage || false,
-      monthlyLimit: key.monthly_limit || 1000,
+      limitMonthlyUsage: false, // Not user-configurable anymore
+      monthlyLimit: 1000, // Not user-configurable anymore
       enablePII: key.enable_pii || false,
     });
     setShowModal(true);
@@ -438,34 +438,6 @@ function DashboardInner() {
                 </div>
               </div>
 
-              {/* Monthly Usage Limit */}
-              <div>
-                <label className="flex items-start gap-3 mb-3">
-                  <input
-                    type="checkbox"
-                    checked={formData.limitMonthlyUsage}
-                    onChange={(e) => setFormData({ ...formData, limitMonthlyUsage: e.target.checked })}
-                    className="mt-0.5 w-4 h-4 text-yellow-600 border-gray-300 rounded focus:ring-yellow-500"
-                  />
-                  <div className="flex-1">
-                    <span className="text-sm font-medium text-gray-900 block mb-1">Limit monthly usage</span>
-                    <p className="text-xs text-gray-500">
-                      If the combined usage of all your keys exceeds your account's allocated usage limit, all requests will be rejected.
-                    </p>
-                  </div>
-                </label>
-                {formData.limitMonthlyUsage && (
-                  <div className="ml-7 mb-2">
-                    <input
-                      type="number"
-                      value={formData.monthlyLimit}
-                      onChange={(e) => setFormData({ ...formData, monthlyLimit: parseInt(e.target.value) || 1000 })}
-                      className="w-full px-3 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-yellow-500 text-sm"
-                      placeholder="1000"
-                    />
-                  </div>
-                )}
-              </div>
 
               {/* Enable PII Restrictions */}
               <div>
