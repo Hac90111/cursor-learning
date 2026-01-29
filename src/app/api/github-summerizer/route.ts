@@ -23,16 +23,27 @@ function extractApiKeyFromHeader(request: NextRequest): string | null {
   return authHeader.trim();
 }
 
-// POST /api/github-summerizer - GitHub summarizer endpoint (public access, optional API key)
+// POST /api/github-summerizer - GitHub summarizer endpoint (protected, requires API key)
 export async function POST(request: NextRequest) {
   try {
-    // Extract API key from header (optional)
+    // Extract API key from header (required)
     const apiKey = extractApiKeyFromHeader(request);
+    
+    // Require API key - reject if not provided
+    if (!apiKey || !apiKey.trim()) {
+      return NextResponse.json(
+        { 
+          error: 'API key is required. Please provide it in the Authorization header as "Bearer <key>" or directly as the API key.',
+          code: 'API_KEY_REQUIRED'
+        },
+        { status: 401 }
+      );
+    }
     
     // Step 1: Validate API key
     const validationResult = await validateApiKey(apiKey);
     
-    // Reject if API key was provided but is invalid
+    // Reject if API key is invalid
     if (!validationResult.valid) {
       return NextResponse.json(
         { 
@@ -43,25 +54,33 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Step 2: Check rate limit (only if API key was provided)
-    if (validationResult.apiKeyId) {
-      const rateLimitResult = await checkRateLimit({
-        apiKeyId: validationResult.apiKeyId,
-        incrementUsage: true, // Increment usage before processing
-      });
-      
-      // Reject if rate limit exceeded
-      if (!rateLimitResult.allowed) {
-        return NextResponse.json(
-          { 
-            error: rateLimitResult.error || 'Rate limit exceeded',
-            code: 'RATE_LIMIT_EXCEEDED',
-            currentUsage: rateLimitResult.currentUsage,
-            limit: rateLimitResult.limit
-          },
-          { status: 429 }
-        );
-      }
+    // Step 2: Check rate limit (required since API key is mandatory)
+    if (!validationResult.apiKeyId) {
+      return NextResponse.json(
+        { 
+          error: 'API key validation failed - no API key ID found',
+          code: 'INVALID_API_KEY'
+        },
+        { status: 401 }
+      );
+    }
+
+    const rateLimitResult = await checkRateLimit({
+      apiKeyId: validationResult.apiKeyId,
+      incrementUsage: true, // Increment usage before processing
+    });
+    
+    // Reject if rate limit exceeded
+    if (!rateLimitResult.allowed) {
+      return NextResponse.json(
+        { 
+          error: rateLimitResult.error || 'Rate limit exceeded',
+          code: 'RATE_LIMIT_EXCEEDED',
+          currentUsage: rateLimitResult.currentUsage,
+          limit: rateLimitResult.limit
+        },
+        { status: 429 }
+      );
     }
 
     // Parse request body for actual request data (not API key)
@@ -142,16 +161,27 @@ export async function POST(request: NextRequest) {
   }
 }
 
-// GET /api/github-summerizer - GitHub summarizer endpoint (public access, optional API key)
+// GET /api/github-summerizer - GitHub summarizer endpoint (protected, requires API key)
 export async function GET(request: NextRequest) {
   try {
-    // Extract API key from header (optional)
+    // Extract API key from header (required)
     const apiKey = extractApiKeyFromHeader(request);
+    
+    // Require API key - reject if not provided
+    if (!apiKey || !apiKey.trim()) {
+      return NextResponse.json(
+        { 
+          error: 'API key is required. Please provide it in the Authorization header as "Bearer <key>" or directly as the API key.',
+          code: 'API_KEY_REQUIRED'
+        },
+        { status: 401 }
+      );
+    }
     
     // Step 1: Validate API key
     const validationResult = await validateApiKey(apiKey);
     
-    // Reject if API key was provided but is invalid
+    // Reject if API key is invalid
     if (!validationResult.valid) {
       return NextResponse.json(
         { 
@@ -162,25 +192,33 @@ export async function GET(request: NextRequest) {
       );
     }
 
-    // Step 2: Check rate limit (only if API key was provided)
-    if (validationResult.apiKeyId) {
-      const rateLimitResult = await checkRateLimit({
-        apiKeyId: validationResult.apiKeyId,
-        incrementUsage: true, // Increment usage before processing
-      });
-      
-      // Reject if rate limit exceeded
-      if (!rateLimitResult.allowed) {
-        return NextResponse.json(
-          { 
-            error: rateLimitResult.error || 'Rate limit exceeded',
-            code: 'RATE_LIMIT_EXCEEDED',
-            currentUsage: rateLimitResult.currentUsage,
-            limit: rateLimitResult.limit
-          },
-          { status: 429 }
-        );
-      }
+    // Step 2: Check rate limit (required since API key is mandatory)
+    if (!validationResult.apiKeyId) {
+      return NextResponse.json(
+        { 
+          error: 'API key validation failed - no API key ID found',
+          code: 'INVALID_API_KEY'
+        },
+        { status: 401 }
+      );
+    }
+
+    const rateLimitResult = await checkRateLimit({
+      apiKeyId: validationResult.apiKeyId,
+      incrementUsage: true, // Increment usage before processing
+    });
+    
+    // Reject if rate limit exceeded
+    if (!rateLimitResult.allowed) {
+      return NextResponse.json(
+        { 
+          error: rateLimitResult.error || 'Rate limit exceeded',
+          code: 'RATE_LIMIT_EXCEEDED',
+          currentUsage: rateLimitResult.currentUsage,
+          limit: rateLimitResult.limit
+        },
+        { status: 429 }
+      );
     }
 
     // Get query parameters
