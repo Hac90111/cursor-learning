@@ -168,14 +168,14 @@ export function ApiDemo() {
             {/* API Key Input (Optional) */}
             <div>
               <label htmlFor="apiKey" className="block text-sm font-medium mb-2">
-                API Key (Optional - for usage tracking)
+                API Key (Required)
               </label>
               <input
                 id="apiKey"
                 type="password"
                 value={apiKey}
                 onChange={(e) => setApiKey(e.target.value)}
-                placeholder="Enter your API key to track usage (optional)"
+                placeholder="Enter your API key"
                 className="w-full px-4 py-2 border border-border rounded-md bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-yellow-500/50"
               />
               <p className="text-xs text-muted-foreground mt-1">

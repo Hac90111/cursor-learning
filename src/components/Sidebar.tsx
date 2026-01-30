@@ -38,15 +38,15 @@ export default function Sidebar() {
         </svg>
       ),
     },
-    {
-      label: "Use Cases",
-      href: "/dashboard/use-cases",
-      icon: (
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-          <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z" />
-        </svg>
-      ),
-    },
+    // {
+    //   label: "Use Cases",
+    //   href: "/dashboard/use-cases",
+    //   icon: (
+    //     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+    //       <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z" />
+    //     </svg>
+    //   ),
+    // },
     {
       label: "Billing",
       href: "/dashboard/billing",
@@ -57,25 +57,25 @@ export default function Sidebar() {
         </svg>
       ),
     },
-    {
-      label: "Settings",
-      href: "/dashboard/settings",
-      icon: (
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-          <circle cx="12" cy="12" r="3" />
-          <path d="M12 1v6m0 6v6m9-9h-6m-6 0H3" />
-        </svg>
-      ),
-    },
-    {
-      label: "Certification",
-      href: "/dashboard/certification",
-      icon: (
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-          <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z" />
-        </svg>
-      ),
-    },
+    // {
+    //   label: "Settings",
+    //   href: "/dashboard/settings",
+    //   icon: (
+    //     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+    //       <circle cx="12" cy="12" r="3" />
+    //       <path d="M12 1v6m0 6v6m9-9h-6m-6 0H3" />
+    //     </svg>
+    //   ),
+    // },
+    // {
+    //   label: "Certification",
+    //   href: "/dashboard/certification",
+    //   icon: (
+    //     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+    //       <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z" />
+    //     </svg>
+    //   ),
+    // },
     {
       label: "Documentation",
       href: "https://docs.example.com",
@@ -139,7 +139,7 @@ export default function Sidebar() {
       {/* Logo */}
       <div className="p-6 border-b border-gray-200">
         <div className="flex items-center justify-between">
-          <div className="flex items-center gap-2">
+          <Link href="/" className="flex items-center gap-2 hover:opacity-80 transition-opacity cursor-pointer">
             {/* Logo Icon - Three arrows from center point */}
             <div className="relative w-6 h-6 flex items-center justify-center">
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
@@ -163,7 +163,7 @@ export default function Sidebar() {
               </svg>
             </div>
             <span className="text-xl font-semibold text-black">Dattus</span>
-          </div>
+          </Link>
           {/* Toggle Button */}
           <button
             onClick={toggleSidebar}

@@ -165,7 +165,7 @@ export async function validateApiKey(
     if (error) {
       console.error('Supabase error during API key validation:', error);
 
-      let errorMessage = error.message || 'API key is invalid';
+      let errorMessage = 'API key is invalid or not found';
 
       if (error.code === '42P01' || error.message.includes('does not exist')) {
         errorMessage =
