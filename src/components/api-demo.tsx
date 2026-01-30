@@ -178,9 +178,9 @@ export function ApiDemo() {
                 placeholder="Enter your API key"
                 className="w-full px-4 py-2 border border-border rounded-md bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-yellow-500/50"
               />
-              <p className="text-xs text-muted-foreground mt-1">
+              {/* <p className="text-xs text-muted-foreground mt-1">
                 This API is publicly accessible. Leave empty to use without authentication, or provide an API key to track your usage.
-              </p>
+              </p> */}
             </div>
 
             {/* Request Section */}
