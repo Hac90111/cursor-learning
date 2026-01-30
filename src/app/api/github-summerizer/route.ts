@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { validateApiKey, checkRateLimit } from '@/lib/rate-limit';
 import { summarizeReadme, type ReadmeSummary } from './chain';
+import { fetchRepositoryMetadata, fetchReadmeFromGithubUrl } from './github-utils';
 
 
 /**
@@ -113,9 +114,15 @@ export async function POST(request: NextRequest) {
     // Extract repo name from URL
     const match = githubUrl.match(urlPattern);
     const repoName = match ? match[2] : undefined;
+    const owner = match ? match[1] : undefined;
 
-    // Fetch README content
-    const readmeContent = await fetchReadmeFromGithubUrl(githubUrl);
+    // Fetch README content and repository metadata in parallel for better performance
+    const [readmeContent, repositoryMetadata] = await Promise.all([
+      fetchReadmeFromGithubUrl(githubUrl),
+      owner && repoName 
+        ? fetchRepositoryMetadata(owner, repoName)
+        : Promise.resolve({ stars: null, latestVersion: null, websiteUrl: null, license: null }),
+    ]);
     
     if (!readmeContent) {
       return NextResponse.json(
@@ -145,7 +152,11 @@ export async function POST(request: NextRequest) {
         repository: {
           url: githubUrl,
           name: repoName,
-          owner: match ? match[1] : undefined,
+          owner: owner,
+          stars: repositoryMetadata.stars,
+          latestVersion: repositoryMetadata.latestVersion,
+          websiteUrl: repositoryMetadata.websiteUrl,
+          license: repositoryMetadata.license,
         },
         readmeLength: readmeContent.length,
         summary: summaryResult.summary,
@@ -245,9 +256,15 @@ export async function GET(request: NextRequest) {
     // Extract repo name from URL
     const match = githubUrl.match(urlPattern);
     const repoName = match ? match[2] : (repo || undefined);
+    const owner = match ? match[1] : undefined;
 
-    // Fetch README content
-    const readmeContent = await fetchReadmeFromGithubUrl(githubUrl);
+    // Fetch README content and repository metadata in parallel for better performance
+    const [readmeContent, repositoryMetadata] = await Promise.all([
+      fetchReadmeFromGithubUrl(githubUrl),
+      owner && repoName 
+        ? fetchRepositoryMetadata(owner, repoName)
+        : Promise.resolve({ stars: null, latestVersion: null, websiteUrl: null, license: null }),
+    ]);
     
     if (!readmeContent) {
       return NextResponse.json(
@@ -277,7 +294,11 @@ export async function GET(request: NextRequest) {
         repository: {
           url: githubUrl,
           name: repoName,
-          owner: match ? match[1] : undefined,
+          owner: owner,
+          stars: repositoryMetadata.stars,
+          latestVersion: repositoryMetadata.latestVersion,
+          websiteUrl: repositoryMetadata.websiteUrl,
+          license: repositoryMetadata.license,
         },
         readmeLength: readmeContent.length,
         summary: summaryResult.summary,
@@ -290,53 +311,6 @@ export async function GET(request: NextRequest) {
       { error: error.message || 'Failed to process GitHub summarizer request' },
       { status: 500 }
     );
-  }
-}
-
-
-/**
- * Fetches the content of a README.md file from a GitHub repository URL
- * @param githubUrl {string} The GitHub repository URL (e.g. https://github.com/user/repo)
- * @returns {Promise<string | null>} The content of the README.md file, or null if not found/error.
- */
-async function fetchReadmeFromGithubUrl(githubUrl: string): Promise<string | null> {
-  try {
-    if (!githubUrl) return null;
-
-    // Parse the GitHub URL to extract user and repo
-    const urlPattern = /^https:\/\/github\.com\/([^/]+)\/([^/]+)(\/.*)?$/;
-    const match = githubUrl.match(urlPattern);
-    if (!match) return null;
-
-    const owner = match[1];
-    const repo = match[2];
-
-    // Try default README locations, preferring main branch, then master
-    const branches = ['main', 'master'];
-    for (const branch of branches) {
-      const rawUrl = `https://raw.githubusercontent.com/${owner}/${repo}/${branch}/README.md`;
-      const res = await fetch(rawUrl);
-      if (res.ok) {
-        return await res.text();
-      }
-    }
-    
-    // If not found, try GitHub API as fallback (case-insensitive filenames, etc.)
-    const apiUrl = `https://api.github.com/repos/${owner}/${repo}/readme`;
-    const apiRes = await fetch(apiUrl, {
-      headers: {
-        Accept: 'application/vnd.github.v3.raw',
-      },
-    });
-    if (apiRes.ok) {
-      return await apiRes.text();
-    }
-
-
-    return null;
-  } catch (error) {
-    console.error('Failed to fetch README.md from GitHub:', error);
-    return null;
   }
 }
 
