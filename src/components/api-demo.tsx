@@ -6,7 +6,7 @@ import { Button } from '@/components/ui/button'
 import { Send, BookOpen, Copy, Check, Loader2, FileText, Sparkles } from 'lucide-react'
 
 const DEFAULT_PAYLOAD = {
-  githubUrl: "https://github.com/github/copilot-sdk?utm_source=email-cli-sdk-repo-cta&utm_medium=email&utm_campaign=cli-sdk-jan-2026"
+  githubUrl: "https://github.com/Hac90111/cursor-learning"
 }
 
 const API_ENDPOINT = '/api/github-summerizer'

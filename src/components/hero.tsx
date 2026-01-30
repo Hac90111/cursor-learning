@@ -19,8 +19,8 @@ export function Hero() {
           <span className="text-sm font-medium text-yellow-700">Powered by advanced analytics</span>
         </div>
 
-        <h1 className="text-5xl sm:text-6xl lg:text-7xl font-bold mb-6 text-balance bg-gradient-to-r from-gray-900 via-gray-800 to-gray-900 dark:from-white dark:via-gray-100 dark:to-white bg-clip-text text-transparent">
-          Understand Your Open Source
+        <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold mb-6 whitespace-nowrap leading-normal bg-gradient-to-r from-gray-900 via-gray-800 to-gray-900 dark:from-white dark:via-gray-100 dark:to-white bg-clip-text text-transparent py-1">
+          Unlock Github Insights with Dattus
         </h1>
 
         <p className="text-lg sm:text-xl text-muted-foreground mb-10 text-balance max-w-2xl mx-auto">
