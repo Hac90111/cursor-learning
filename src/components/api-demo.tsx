@@ -117,9 +117,9 @@ export function ApiDemo() {
             <div className="flex items-start justify-between gap-4">
               <div className="flex-1">
                 <CardTitle className="text-2xl mb-2">GitHub Summarizer API</CardTitle>
-                <CardDescription>
+                {/* <CardDescription>
                   POST {API_ENDPOINT}
-                </CardDescription>
+                </CardDescription> */}
               </div>
               <CardAction>
                 <Button
